@@ -40,6 +40,8 @@ public class JpaMain {
         } finally {
             em.close();
         }
+
+        // 웹어플리케이션이면 WAS가 내려갈때 엔티티매니저팩토리를 닫아줘야한다.
         emf.close();
 
 

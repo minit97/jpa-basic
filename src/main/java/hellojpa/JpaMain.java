@@ -39,11 +39,17 @@ public class JpaMain {
 //                System.out.println("member.name = " + member.getName());
 //            }
 
-            Member member1 = new Member(150L, "A");
-            Member member2 = new Member(150L, "A");
+//            Member member1 = new Member(150L, "A");
+//            Member member2 = new Member(150L, "A");
+//
+//            em.persist(member1);
+//            em.persist(member2);
 
-            em.persist(member1);
-            em.persist(member2);
+            Member member = new Member(200L, "member200");
+            em.persist(member);
+            
+            em.flush();     // 커밋 전 쿼리확인 가능
+//            em.detach(member);
 
             tx.commit();
         } catch (Exception e) {

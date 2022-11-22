@@ -45,8 +45,8 @@ public class JpaMain {
 //            em.persist(member1);
 //            em.persist(member2);
 
-            Member member = new Member(200L, "member200");
-            em.persist(member);
+//            Member member = new Member(200L, "member200");
+//            em.persist(member);
             
             em.flush();     // 커밋 전 쿼리확인 가능
 //            em.detach(member);

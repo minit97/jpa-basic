@@ -15,41 +15,30 @@ public class JpaMain {
         tx.begin();
 
         try {
-//            // 비영속
-//            Member member = new Member();
-//            member.setId(1L);
-//            member.setName("HelloA");
-//            // 영속
-//            em.persist(member);
-//
-//            Member findMember1 = em.find(Member.class, 1L);
-//            Member findMember2 = em.find(Member.class, 1L);
-//            System.out.println(findMember2 == findMember1);
 
-//            Member findMember = em.find(Member.class, 1L);
-//            findMember.setName("HelloJPA");
+            // 저장
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
 
-            // 대상이 테이블이 아닌 객체다!
-//            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-//                    .setFirstResult(5)  // 5번부터
-//                    .setMaxResults(8)   // 8개 가져와라
-//                    .getResultList();
-//
-//            for (Member member: result){
-//                System.out.println("member.name = " + member.getName());
-//            }
+            Member2 member = new Member2();
+            member.setUsername("member1");
+//            member.setTeamId(team.getId());
+            member.setTeam(team);
+            em.persist(member);
 
-//            Member member1 = new Member(150L, "A");
-//            Member member2 = new Member(150L, "A");
-//
-//            em.persist(member1);
-//            em.persist(member2);
+            em.flush();
+            em.clear();
 
-//            Member member = new Member(200L, "member200");
-//            em.persist(member);
-            
-            em.flush();     // 커밋 전 쿼리확인 가능
-//            em.detach(member);
+            Member2 findMember = em.find(Member2.class, member.getId());
+//            Long findTeamId = findMember.getTeamId();
+//            Team findTeam = em.find(Team.class, findTeamId);
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam = " + findTeam.getName());
+
+            // team update
+            Team newTeam = em.find(Team.class, 100L);
+            findMember.setTeam(newTeam);
 
             tx.commit();
         } catch (Exception e) {

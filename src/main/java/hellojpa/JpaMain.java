@@ -31,14 +31,11 @@ public class JpaMain {
             em.clear();
 
             Member2 findMember = em.find(Member2.class, member.getId());
-//            Long findTeamId = findMember.getTeamId();
-//            Team findTeam = em.find(Team.class, findTeamId);
-            Team findTeam = findMember.getTeam();
-            System.out.println("findTeam = " + findTeam.getName());
 
-            // team update
-            Team newTeam = em.find(Team.class, 100L);
-            findMember.setTeam(newTeam);
+            List<Member2> member2s = findMember.getTeam().getMember2s();    // 역방향조회
+            for (Member2 m : member2s) {
+                System.out.println("m.getUsername() = " + m.getUsername());
+            }
 
             tx.commit();
         } catch (Exception e) {

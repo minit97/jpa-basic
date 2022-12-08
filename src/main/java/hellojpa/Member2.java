@@ -41,13 +41,8 @@ public class Member2 {
 
     public void setTeam(Team team) {
         this.team = team;
+        team.getMember2s().add(this);
     }
-//    public Long getTeamId() {
-//        return teamId;
-//    }
-//
-//    public void setTeamId(Long teamId) {
-//        this.teamId = teamId;
-//    }
+
 
 }

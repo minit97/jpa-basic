@@ -59,6 +59,7 @@ public class Order {
         this.status = status;
     }
 
+    // 연관관계 편의메소드
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);

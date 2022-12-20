@@ -15,28 +15,16 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 저장
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
             Member2 member = new Member2();
             member.setUsername("member1");
 
-//            team.getMember2s().add(member); // mappedBy는 읽기 전용 // jpa에서 insert, update 할때 사용 X
-            // 연관관계의 주인에 값 설정
-            member.setTeam(team);   //**
             em.persist(member);
 
-//            team.addMember(member);
-//            em.flush();
-//            em.clear();
+            Team team = new Team();
+            team.setName("teamA");
+            team.getMember2s().add(member);
 
-            Team findTeam = em.find(Team.class, team.getId());  // 1차 캐시
-            List<Member2> member2s = findTeam.getMember2s();
-            for (Member2 m : member2s) {
-                System.out.println("m.getUsername() = " + m.getUsername());
-            }
+            em.persist(team);
 
             tx.commit();
         } catch (Exception e) {

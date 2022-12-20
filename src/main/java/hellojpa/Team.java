@@ -11,7 +11,8 @@ public class Team {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "team")       // Member2의 team 변수명과 연결되어 있다.
+    @OneToMany
+    @JoinColumn(name="TEAM_ID")
     private List<Member2> member2s = new ArrayList<>();
 
     public Long getId() {

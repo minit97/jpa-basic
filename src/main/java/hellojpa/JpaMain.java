@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -16,22 +17,47 @@ public class JpaMain {
 
         try {
 
-            Address address = new Address("city", "street", "10000");
-
             Member2 member = new Member2();
             member.setUsername("member1");
-            member.setHomeAddress(address);
+            member.setHomeAddress(new Address("homeCity","street","10000"));
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("피자");
+            member.getFavoriteFoods().add("족발");
+
+            member.getAddressHistory().add(new AddressEntity("old1","street","10000"));
+            member.getAddressHistory().add(new AddressEntity("old2","street","10000"));
+
             em.persist(member);
 
-            Address newAddress = new Address("NewCity", address.getStreet(), address.getZipcode());
-            member.setHomeAddress(newAddress);
+            em.flush();
+            em.clear();
 
-//            Member2 member2 = new Member2();
-//            member.setUsername("member2");
-//            member.setHomeAddress(copyAddress);
-//            em.persist(member2);
+            System.out.println("========START==========");
+            Member2 findMember = em.find(Member2.class, member.getId());
+
+//            List<Address> addressHistory = findMember.getAddressHistory();
+//            for (Address address : addressHistory) {
+//                System.out.println("address = " + address.getCity());
+//            }
 //
-//            member.getHomeAddress().setCity("newCity");
+//            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+//            for (String favoriteFood : favoriteFoods) {
+//                System.out.println("favoriteFood = " + favoriteFood);
+//            }
+
+            // homeCity -> newCity
+//            findMember.getHomeAddress().setCity("newCity");   // 잘못된 예시
+
+            Address a = findMember.getHomeAddress();
+            findMember.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode()));
+
+            // 치킨 -> 한식
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("한식");
+
+            findMember.getAddressHistory().remove(new AddressEntity("old1","street","10000"));    // 삭제에서 equals, hascode 구현이 중요하다.
+            findMember.getAddressHistory().add(new AddressEntity("newCity1","street","10000"));   // old2과 newCity1 둘다 갈아끼웠다.
 
             tx.commit();
         } catch (Exception e) {

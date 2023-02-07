@@ -3,6 +3,9 @@ package hellojpa;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -16,50 +19,32 @@ public class JpaMain {
         tx.begin();
 
         try {
+            // 1. JPQL
+//            List<Member2> resultList = em.createQuery("select m From Member2 as m where m.username like '%kim%'", Member2.class).getResultList();
+//            for (Member2 member2 : resultList) {
+//                System.out.println("member2 = " + member2.getId());
+//            }
 
-            Member2 member = new Member2();
-            member.setUsername("member1");
-            member.setHomeAddress(new Address("homeCity","street","10000"));
+            // 2. Criteria
+//            CriteriaBuilder cb = em.getCriteriaBuilder();
+//            CriteriaQuery<Member2> query = cb.createQuery(Member2.class);
+//
+//            Root<Member2> m = query.from(Member2.class);
+//            CriteriaQuery<Member2> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
+//            List<Member2> resultList = em.createQuery(cq).getResultList();
 
-            member.getFavoriteFoods().add("치킨");
-            member.getFavoriteFoods().add("피자");
-            member.getFavoriteFoods().add("족발");
+            Member2 member2 = new Member2();
+            member2.setUsername("member1");
+            em.persist(member2);
 
-            member.getAddressHistory().add(new AddressEntity("old1","street","10000"));
-            member.getAddressHistory().add(new AddressEntity("old2","street","10000"));
-
-            em.persist(member);
+            // flush -> commit, query
 
             em.flush();
-            em.clear();
 
-            System.out.println("========START==========");
-            Member2 findMember = em.find(Member2.class, member.getId());
+            // 결과0
+            // db.conn.executeQuery("select * from member");
 
-//            List<Address> addressHistory = findMember.getAddressHistory();
-//            for (Address address : addressHistory) {
-//                System.out.println("address = " + address.getCity());
-//            }
-//
-//            Set<String> favoriteFoods = findMember.getFavoriteFoods();
-//            for (String favoriteFood : favoriteFoods) {
-//                System.out.println("favoriteFood = " + favoriteFood);
-//            }
-
-            // homeCity -> newCity
-//            findMember.getHomeAddress().setCity("newCity");   // 잘못된 예시
-
-            Address a = findMember.getHomeAddress();
-            findMember.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode()));
-
-            // 치킨 -> 한식
-            findMember.getFavoriteFoods().remove("치킨");
-            findMember.getFavoriteFoods().add("한식");
-
-            findMember.getAddressHistory().remove(new AddressEntity("old1","street","10000"));    // 삭제에서 equals, hascode 구현이 중요하다.
-            findMember.getAddressHistory().add(new AddressEntity("newCity1","street","10000"));   // old2과 newCity1 둘다 갈아끼웠다.
-
-            tx.commit();
+            tx.commit();;
         } catch (Exception e) {
             tx.rollback();
         } finally {

@@ -28,7 +28,7 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            List<Member> result = em.createQuery("select m from Member m left join m.team t on t.name = 'teamA'", Member.class)
+            List<Member> result = em.createQuery("select (select avg(m1.age) From Member m1) as avgAge from Member m left join m.team t on t.name = 'teamA'", Member.class)
                     .setFirstResult(0)
                     .setMaxResults(10)
                     .getResultList();

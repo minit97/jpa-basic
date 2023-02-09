@@ -1,20 +1,19 @@
 package hellojpa;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public class Address {
+public class Address_basic {
     private String city;
     private String street;
     private String zipcode;
 
 
-    public Address() {
+    public Address_basic() {
     }
 
-    public Address(String city, String street, String zipcode) {
+    public Address_basic(String city, String street, String zipcode) {
         this.city = city;
         this.street = street;
         this.zipcode = zipcode;
@@ -46,7 +45,7 @@ public class Address {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Address address = (Address) o;
+        Address_basic address = (Address_basic) o;
         return Objects.equals(city, address.city) && Objects.equals(street, address.street) && Objects.equals(zipcode, address.zipcode);
     }
 

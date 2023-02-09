@@ -1,7 +1,6 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +18,7 @@ public class Member2 {
 
     // 주소
     @Embedded
-    private Address homeAddress;
+    private Address_basic homeAddress;
 
     @ElementCollection
     @CollectionTable(name = "FAVORITE_FOOD",
@@ -57,11 +56,11 @@ public class Member2 {
     }
 
 
-    public Address getHomeAddress() {
+    public Address_basic getHomeAddress() {
         return homeAddress;
     }
 
-    public void setHomeAddress(Address homeAddress) {
+    public void setHomeAddress(Address_basic homeAddress) {
         this.homeAddress = homeAddress;
     }
 

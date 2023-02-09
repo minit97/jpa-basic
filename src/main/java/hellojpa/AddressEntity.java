@@ -11,13 +11,13 @@ public class AddressEntity {
     @Id @GeneratedValue
     private Long id;
 
-    private Address address;
+    private Address_basic address;
 
     public AddressEntity() {
     }
 
     public AddressEntity(String city, String street, String zipcode) {
-        this.address = new Address(city, street, zipcode);
+        this.address = new Address_basic(city, street, zipcode);
     }
 
     public Long getId() {
@@ -28,11 +28,11 @@ public class AddressEntity {
         this.id = id;
     }
 
-    public Address getAddress() {
+    public Address_basic getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(Address_basic address) {
         this.address = address;
     }
 }

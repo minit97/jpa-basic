@@ -3,8 +3,12 @@ package hellojpa;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -15,23 +19,32 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Child child1 = new Child();
-            Child child2 = new Child();
+            // 1. JPQL
+//            List<Member2> resultList = em.createQuery("select m From Member2 as m where m.username like '%kim%'", Member2.class).getResultList();
+//            for (Member2 member2 : resultList) {
+//                System.out.println("member2 = " + member2.getId());
+//            }
 
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
+            // 2. Criteria
+//            CriteriaBuilder cb = em.getCriteriaBuilder();
+//            CriteriaQuery<Member2> query = cb.createQuery(Member2.class);
+//
+//            Root<Member2> m = query.from(Member2.class);
+//            CriteriaQuery<Member2> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
+//            List<Member2> resultList = em.createQuery(cq).getResultList();
 
-            em.persist(parent);
+            Member2 member2 = new Member2();
+            member2.setUsername("member1");
+            em.persist(member2);
+
+            // flush -> commit, query
 
             em.flush();
-            em.clear();
 
-            Parent findParent = em.find(Parent.class, parent.getId());
-            findParent.getChildList().remove(0);
+            // 결과0
+            // db.conn.executeQuery("select * from member");
 
-
-            tx.commit();
+            tx.commit();;
         } catch (Exception e) {
             tx.rollback();
         } finally {
